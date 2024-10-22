@@ -1,14 +1,16 @@
 package com.fawry.couponservice.service;
 
+import com.fawry.couponservice.dto.CouponRequestDto;
+import com.fawry.couponservice.dto.CouponResponseDto;
 import com.fawry.couponservice.entity.Coupon;
 
 import java.util.List;
 
 public interface CouponService {
-    Coupon create(Coupon coupon);
+    void create(CouponRequestDto coupon);
+    List<CouponResponseDto> getCoupons();
     Coupon update(Coupon coupon);
     Coupon delete(Long id);
-    List<Coupon> getCoupons();
     Coupon getCoupon(Long id);
     Coupon getCouponByCode(String code);
     void useCoupon(Long id);
