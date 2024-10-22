@@ -9,10 +9,10 @@ import java.util.List;
 public interface CouponService {
     void create(CouponRequestDto coupon);
     List<CouponResponseDto> getCoupons();
+    CouponResponseDto getCoupon(Long id,String code);
+//----------------------------------------------
     Coupon update(Coupon coupon);
     Coupon delete(Long id);
-    Coupon getCoupon(Long id);
-    Coupon getCouponByCode(String code);
     void useCoupon(Long id);
     Coupon toggleActivation(Long id);
 }

@@ -6,10 +6,13 @@ import com.fawry.couponservice.entity.Coupon;
 import com.fawry.couponservice.repository.CouponRepository;
 import jakarta.persistence.Column;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CouponServiceImpl implements CouponService {
@@ -45,6 +48,28 @@ public class CouponServiceImpl implements CouponService {
               .toList();
 
     }
+    @Override
+    public CouponResponseDto getCoupon(Long id,String code) {
+        CouponResponseDto couponResponseDto = new CouponResponseDto();
+        Coupon coupon=null;
+        if(id!=null){
+             coupon = couponRepository.findById(id).orElse(null);
+        }
+        else if(code!=null){
+             coupon = couponRepository.findByCode(code).orElse(null);
+        }
+        if(coupon!=null){
+            couponResponseDto.setActive(coupon.isActive());
+            couponResponseDto.setCode(coupon.getCode());
+            couponResponseDto.setUsages(coupon.getUsages());
+            couponResponseDto.setValue(coupon.getValue());
+            couponResponseDto.setPercentage(coupon.isPercentage());
+            couponResponseDto.setExpiredAt(coupon.getExpiredAt());
+            couponResponseDto.setRemainingUsages(coupon.getRemainingUsages());
+        }
+        return couponResponseDto;
+    }
+//----------------------------------------------------------
 
     @Override
     public Coupon update(Coupon coupon) {
@@ -57,15 +82,7 @@ public class CouponServiceImpl implements CouponService {
     }
 
 
-    @Override
-    public Coupon getCoupon(Long id) {
-        return null;
-    }
 
-    @Override
-    public Coupon getCouponByCode(String code) {
-        return null;
-    }
 
     @Override
     public void useCoupon(Long id) {

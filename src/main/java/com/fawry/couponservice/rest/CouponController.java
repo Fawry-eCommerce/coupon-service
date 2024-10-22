@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/coupons")
@@ -29,4 +30,19 @@ public class CouponController {
        couponService.create(coupon);
 //       return createdCoupon;
     }
+
+
+    @GetMapping("/{identifier}")
+        public CouponResponseDto getCouponByIdOrCode(@PathVariable String identifier) {
+            // Determine if the identifier is a Long (ID) or a String (Code)
+        CouponResponseDto couponOpt;
+        try {
+                Long id = Long.parseLong(identifier);
+                 couponOpt = couponService.getCoupon(id, null);
+
+            } catch (NumberFormatException e) {
+                 couponOpt = couponService.getCoupon(null, identifier);
+            }
+            return  couponOpt;
+        }
 }
