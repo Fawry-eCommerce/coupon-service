@@ -4,15 +4,11 @@ import com.fawry.couponservice.dto.CouponRequestDto;
 import com.fawry.couponservice.dto.CouponResponseDto;
 import com.fawry.couponservice.entity.Coupon;
 import com.fawry.couponservice.repository.CouponRepository;
-import jakarta.persistence.Column;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
+
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CouponServiceImpl implements CouponService {
@@ -50,7 +46,7 @@ public class CouponServiceImpl implements CouponService {
     }
     @Override
     public CouponResponseDto getCoupon(Long id,String code) {
-        CouponResponseDto couponResponseDto = new CouponResponseDto();
+        CouponResponseDto couponResponseDto = null;
         Coupon coupon=null;
         if(id!=null){
              coupon = couponRepository.findById(id).orElse(null);
