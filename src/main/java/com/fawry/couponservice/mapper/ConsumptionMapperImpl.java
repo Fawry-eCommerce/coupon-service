@@ -10,14 +10,18 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Data
-//@AllArgsConstructor
+@AllArgsConstructor
 //@NoArgsConstructor
 @Builder
 @Component
 public class ConsumptionMapperImpl implements ConsumptionMapper {
+    @Autowired
+    CouponMapper couponMapper;
+
     @Override
     public CouponConsumption toEntity(CouponUseDto couponUseDto, Coupon tempCoupon) {
         return CouponConsumption.builder()
@@ -28,7 +32,11 @@ public class ConsumptionMapperImpl implements ConsumptionMapper {
 
     @Override
     public ConsumptionResponseDto toResponse(CouponConsumption couponConsumption) {
-        System.out.println(couponConsumption.toString());
-        return null;
+
+        return ConsumptionResponseDto.builder()
+                .email(couponConsumption.getUserEmail())
+                .coupon(couponMapper.toResponse(couponConsumption.getCoupon()))
+                .orderId(couponConsumption.getOrderId())
+                .build();
     }
 }

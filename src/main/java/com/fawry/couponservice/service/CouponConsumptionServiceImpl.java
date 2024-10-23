@@ -1,6 +1,7 @@
 package com.fawry.couponservice.service;
 
 import com.fawry.couponservice.dto.ConsumptionResponseDto;
+import com.fawry.couponservice.dto.CouponResponseDto;
 import com.fawry.couponservice.entity.CouponConsumption;
 import com.fawry.couponservice.mapper.ConsumptionMapper;
 import com.fawry.couponservice.repository.CouponConsumptionsRepository;
@@ -24,8 +25,7 @@ public class CouponConsumptionServiceImpl implements CouponConsumptionService{
     @Override
     public List<ConsumptionResponseDto> getCouponHistory(String code) {
        List<CouponConsumption> history =repository.findByCouponCode(code);
-       mapper.toResponse(history.get(0));
-        return List.of();
+       return history.stream().map(couponConsumption -> mapper.toResponse(couponConsumption)).toList();
     }
 
     @Override

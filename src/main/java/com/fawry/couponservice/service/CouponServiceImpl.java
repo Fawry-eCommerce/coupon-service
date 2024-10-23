@@ -48,6 +48,8 @@ public class CouponServiceImpl implements CouponService {
         List<Coupon> coupons = couponRepository.findAll(); // data as entity
       return   coupons.stream().map(coupon -> couponMapper.toResponse(coupon)).toList();
     }
+    //    ----------------------------------------------------------
+
     @Override
     public CouponResponseDto getCoupon(Long id,String code) {
 
@@ -87,6 +89,8 @@ public class CouponServiceImpl implements CouponService {
             throw new NotFoundException("Coupon not found for code: " + coupon.getCode());
         }
     }
+    //    ----------------------------------------------------------
+
     @Override
     public void delete(Long id,String code) {
         Coupon coupon=null;
@@ -102,6 +106,7 @@ public class CouponServiceImpl implements CouponService {
         couponRepository.delete(coupon);
 
     }
+//    ----------------------------------------------------------
 
     @Override
     public void useCoupon(CouponUseDto coupon) {
@@ -114,11 +119,9 @@ public class CouponServiceImpl implements CouponService {
 //       consume coupon here and update the coupon after finishing
                 tempCoupon.setRemainingUsages(tempCoupon.getRemainingUsages()-1);
                 couponRepository.save(tempCoupon);
-//       add to history of consumption
-               List<CouponConsumption>couponConsumptionList = couponConsumptionsRepository.findByCouponCode(tempCoupon.getCode());
 //               convert use dto to entity;
                 CouponConsumption couponConsumption = consumptionMapper.toEntity(coupon,tempCoupon);
-                couponConsumptionList.add(couponConsumption);
+                couponConsumptionsRepository.save(couponConsumption);
             }
         }
     }
