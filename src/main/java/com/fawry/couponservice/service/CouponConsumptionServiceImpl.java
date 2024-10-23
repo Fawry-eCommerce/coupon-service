@@ -29,7 +29,9 @@ public class CouponConsumptionServiceImpl implements CouponConsumptionService{
     }
 
     @Override
-    public List<ConsumptionResponseDto> getCouponsUsedByUser(Long userId) {
-        return List.of();
+    public List<ConsumptionResponseDto> getCouponsHistoryUsedByUser(String userEmail) {
+        List<CouponConsumption> history =repository.findByUserEmail(userEmail);
+        System.out.println(history.size());
+        return history.stream().map(couponConsumption -> mapper.toResponse(couponConsumption)).toList();
     }
 }

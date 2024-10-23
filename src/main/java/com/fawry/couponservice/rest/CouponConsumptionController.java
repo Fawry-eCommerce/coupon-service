@@ -18,10 +18,18 @@ public class CouponConsumptionController {
     public CouponConsumptionController(CouponConsumptionService couponConsumptionService) {
         this.couponConsumptionService = couponConsumptionService;
     }
+//--------------------------------------------------------------
 
     @GetMapping("/{couponCode}")
     public List<ConsumptionResponseDto> getCouponHistory(@PathVariable String couponCode) {
       return  couponConsumptionService.getCouponHistory(couponCode);
     }
+//   ------------------------------------------------------------
+@GetMapping("/user/{userEmail}")
+public List<ConsumptionResponseDto> getCouponsUsedByUser(@PathVariable String userEmail) {
+    System.out.println(userEmail);
+
+    return  couponConsumptionService.getCouponsHistoryUsedByUser(userEmail);
+}
 
 }

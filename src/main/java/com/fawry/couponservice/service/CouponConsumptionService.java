@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface CouponConsumptionService {
     List<ConsumptionResponseDto> getCouponHistory(String code);
-    List<ConsumptionResponseDto> getCouponsUsedByUser(Long userId);
+    List<ConsumptionResponseDto> getCouponsHistoryUsedByUser(String userEmail);
 
 
 }
