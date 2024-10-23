@@ -10,9 +10,10 @@ public interface CouponService {
     void create(CouponRequestDto coupon);
     List<CouponResponseDto> getCoupons();
     CouponResponseDto getCoupon(Long id,String code);
-//----------------------------------------------
-    Coupon update(Coupon coupon);
-    Coupon delete(Long id);
+    void delete(Long id,String code);
+    CouponResponseDto update(CouponRequestDto coupon);
+
+    //----------------------------------------------
     void useCoupon(Long id);
     Coupon toggleActivation(Long id);
 }

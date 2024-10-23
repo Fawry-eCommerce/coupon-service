@@ -17,7 +17,7 @@ public class CouponController {
     public CouponController(CouponService couponService) {
         this.couponService = couponService;
     }
-//    Get all coupons
+    //    Get all coupons
     @GetMapping
     public List<CouponResponseDto> getAllCoupons(){
         List<CouponResponseDto> coupons = couponService.getCoupons();
@@ -26,28 +26,42 @@ public class CouponController {
         }
         return coupons;
     }
-//    create a coupon
+    //    create a coupon
     @PostMapping
     public void addCoupon(@RequestBody CouponRequestDto coupon){
-       couponService.create(coupon);
-//       return createdCoupon;
+        couponService.create(coupon);
     }
-
-
+    //    get single coupon
     @GetMapping("/{identifier}")
-        public CouponResponseDto getCouponByIdOrCode(@PathVariable String identifier) {
-            // Determine if the identifier is a Long (ID) or a String (Code)
+    public CouponResponseDto getCouponByIdOrCode(@PathVariable String identifier) {
+        // Determine if the identifier is a Long (ID) or a String (Code)
         CouponResponseDto coupon;
         try {
-                Long id = Long.parseLong(identifier);
+            Long id = Long.parseLong(identifier);
             coupon = couponService.getCoupon(id, null);
 
-            } catch (NumberFormatException e) {
+        } catch (NumberFormatException e) {
             coupon = couponService.getCoupon(null, identifier);
-            }
+        }
         if(coupon == null){
             throw new NotFoundException("Coupon with identifier " + identifier + " not found");
         }
-            return  coupon;
+        return  coupon;
+    }
+
+    @PutMapping
+    public CouponResponseDto updateCoupon(@RequestBody CouponRequestDto coupon){
+    return  couponService.update(coupon);
+    }
+    @DeleteMapping("/{identifier}")
+    public void deleteCouponByIdOrCode(@PathVariable String identifier) {
+
+        try {
+            Long id = Long.parseLong(identifier);
+            couponService.delete(id, null);
+
+        } catch (NumberFormatException e) {
+            couponService.delete(null, identifier);
         }
+    }
 }
