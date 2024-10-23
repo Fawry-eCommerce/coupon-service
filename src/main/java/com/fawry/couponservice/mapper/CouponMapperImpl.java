@@ -17,6 +17,7 @@ public class CouponMapperImpl implements CouponMapper {
                     .value(coupon.getValue())
                     .active(coupon.isActive())
                     .percentage(coupon.isPercentage())
+                    .remainingUsages(coupon.getRemainingUsages())
                     .build();
         }
 
@@ -27,6 +28,7 @@ public class CouponMapperImpl implements CouponMapper {
                     .value(couponRequestDto.getValue())
                     .active(couponRequestDto.isActive())
                     .usages(couponRequestDto.getUsages())
+                    .remainingUsages(couponRequestDto.getUsages())
                     .percentage(couponRequestDto.isPercentage())
                     .build();
         }

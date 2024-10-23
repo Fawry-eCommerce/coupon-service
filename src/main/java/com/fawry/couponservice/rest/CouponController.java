@@ -2,6 +2,7 @@ package com.fawry.couponservice.rest;
 
 import com.fawry.couponservice.dto.CouponRequestDto;
 import com.fawry.couponservice.dto.CouponResponseDto;
+import com.fawry.couponservice.dto.CouponUseDto;
 import com.fawry.couponservice.exception.CustomExceptionHandler.NotFoundException;
 import com.fawry.couponservice.service.CouponService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +49,13 @@ public class CouponController {
         }
         return  coupon;
     }
+//    =========================================================
+    @PostMapping("/use-coupon")
+    public void useCoupon(@RequestBody CouponUseDto coupon){
+        couponService.useCoupon(coupon);
+
+        }
+//     ============================================================
 
     @PutMapping
     public CouponResponseDto updateCoupon(@RequestBody CouponRequestDto coupon){
