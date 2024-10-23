@@ -4,6 +4,7 @@ import com.fawry.couponservice.dto.CouponRequestDto;
 import com.fawry.couponservice.dto.CouponResponseDto;
 import com.fawry.couponservice.entity.Coupon;
 import com.fawry.couponservice.exception.CustomExceptionHandler.NotFoundException;
+import com.fawry.couponservice.mapper.CouponMapper;
 import com.fawry.couponservice.repository.CouponRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,40 +18,29 @@ import java.util.List;
 public class CouponServiceImpl implements CouponService {
 
     private CouponRepository couponRepository;
+    private CouponMapper couponMapper;
     @Autowired
-    public CouponServiceImpl(CouponRepository couponRepository) {
+    public CouponServiceImpl(CouponRepository couponRepository,CouponMapper couponMapper) {
         this.couponRepository = couponRepository;
+        this.couponMapper=couponMapper;
     }
 //    ----------------------------------------------------------
     @Override
     public void create(CouponRequestDto coupon) {
 //        create a coupon entity to be saved to the database
-        Coupon couponEntity = new Coupon();
-        couponEntity.setCode(coupon.getCode());
-        couponEntity.setActive(coupon.isActive());
-        couponEntity.setUsages(coupon.getUsages());
-        couponEntity.setValue(coupon.getValue());
-        couponEntity.setPercentage(coupon.getIsPercentage());
-        couponRepository.save(couponEntity);
+
+       Coupon createdCoupon = couponMapper.toEntity(coupon);
+        couponRepository.save(createdCoupon);
     }
 //    ----------------------------------------------------------
     @Override
     public List<CouponResponseDto> getCoupons() {
         List<Coupon> coupons = couponRepository.findAll(); // data as entity
-      return   coupons.stream().map(coupon -> new CouponResponseDto(coupon.getCode(),
-              coupon.getValue(),
-              coupon.isActive(),
-              coupon.isPercentage(),
-              coupon.getUsages(),
-              coupon.getExpiredAt(),
-              coupon.getRemainingUsages()))
-              .toList();
-
+      return   coupons.stream().map(coupon -> couponMapper.toResponse(coupon)).toList();
     }
     @Override
     public CouponResponseDto getCoupon(Long id,String code) {
 
-        CouponResponseDto couponResponseDto = null;
         Coupon coupon=null;
         if(id!=null){
              coupon = couponRepository.findById(id).orElse(null);
@@ -59,15 +49,10 @@ public class CouponServiceImpl implements CouponService {
              coupon = couponRepository.findByCode(code).orElse(null);
         }
         if(coupon!=null){
-            couponResponseDto.setActive(coupon.isActive());
-            couponResponseDto.setCode(coupon.getCode());
-            couponResponseDto.setUsages(coupon.getUsages());
-            couponResponseDto.setValue(coupon.getValue());
-            couponResponseDto.setPercentage(coupon.isPercentage());
-            couponResponseDto.setExpiredAt(coupon.getExpiredAt());
-            couponResponseDto.setRemainingUsages(coupon.getRemainingUsages());
+            CouponResponseDto couponResponseDto = couponMapper.toResponse(coupon);
+            return couponResponseDto;
         }
-        return couponResponseDto;
+        return null;
     }
 //----------------------------------------------------------
 
@@ -85,14 +70,14 @@ public class CouponServiceImpl implements CouponService {
             tempCoupon.setCode(coupon.getCode());
             tempCoupon.setUsages(coupon.getUsages());
             tempCoupon.setValue(coupon.getValue());
-            tempCoupon.setPercentage(coupon.getIsPercentage());
+            tempCoupon.setPercentage(coupon.isPercentage());
             couponRepository.save(tempCoupon);
 //            --------------------------------------------------
             couponResponseDto.setActive(coupon.isActive());
             couponResponseDto.setCode(coupon.getCode());
             couponResponseDto.setUsages(coupon.getUsages());
             couponResponseDto.setValue(coupon.getValue());
-            couponResponseDto.setPercentage(coupon.getIsPercentage());
+            couponResponseDto.setPercentage(coupon.isPercentage());
         }else {
             throw new NotFoundException("Coupon not found for code: " + coupon.getCode());
         }

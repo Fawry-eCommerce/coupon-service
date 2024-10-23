@@ -8,14 +8,11 @@ import java.sql.Timestamp;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class CouponRequestDto {
     private String code;
     private int value;
-    private boolean isActive;
-    private boolean isPercentage;
+    private boolean active;
+    private boolean percentage;
     private int usages;
-    public boolean getIsPercentage() {
-        return isPercentage;
-    }
-
 }

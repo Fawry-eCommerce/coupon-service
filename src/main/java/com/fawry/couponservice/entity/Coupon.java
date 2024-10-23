@@ -1,13 +1,19 @@
 package com.fawry.couponservice.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
 import java.util.List;
 
 @Entity
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "coupon")
 public class Coupon {
     @Id
@@ -27,11 +33,11 @@ public class Coupon {
     @Column(name = "value")
     private int value;
 
-    @Column(name = "is_active", columnDefinition = "boolean default true")
-    private boolean isActive = true;
+    @Column(name = "active", columnDefinition = "boolean default true")
+    private boolean active = true;
 
-    @Column(name = "is_percentage", columnDefinition = "boolean default false")
-    private boolean isPercentage = false;
+    @Column(name = "percentage", columnDefinition = "boolean default false")
+    private boolean percentage = false;
 
     @Column(name = "created_at", updatable = false)
     private Timestamp createdAt;
