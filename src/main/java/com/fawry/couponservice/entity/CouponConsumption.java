@@ -1,12 +1,17 @@
 package com.fawry.couponservice.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
+import java.sql.Timestamp;
 @Data
 @Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "coupon_consumption")
 public class CouponConsumption {
     @Id
@@ -23,6 +28,5 @@ public class CouponConsumption {
     @Column(name = "actual_discount")
     private Double actualDiscount;
     @Column(name = "created_at")
-    private LocalDateTime createdAt;
-
+    private Timestamp createdAt;
 }

@@ -59,12 +59,7 @@ public class CouponServiceImpl implements CouponService {
     @Override
     @Transactional
     public CouponResponseDto update(CouponRequestDto coupon) {
-
-        CouponResponseDto couponResponseDto = new CouponResponseDto();
-
-           Coupon  tempCoupon = couponRepository.findByCode(coupon.getCode()).orElse(null);
-
-
+                   Coupon  tempCoupon = couponRepository.findByCode(coupon.getCode()).orElse(null);
         if(tempCoupon!=null){
             tempCoupon.setActive(coupon.isActive());
             tempCoupon.setCode(coupon.getCode());
@@ -73,15 +68,13 @@ public class CouponServiceImpl implements CouponService {
             tempCoupon.setPercentage(coupon.isPercentage());
             couponRepository.save(tempCoupon);
 //            --------------------------------------------------
-            couponResponseDto.setActive(coupon.isActive());
-            couponResponseDto.setCode(coupon.getCode());
-            couponResponseDto.setUsages(coupon.getUsages());
-            couponResponseDto.setValue(coupon.getValue());
-            couponResponseDto.setPercentage(coupon.isPercentage());
-        }else {
+            CouponResponseDto couponResponseDto = couponMapper.toResponse(tempCoupon);
+            return couponResponseDto;
+
+        }
+        else {
             throw new NotFoundException("Coupon not found for code: " + coupon.getCode());
         }
-        return couponResponseDto;
     }
 
     @Override
