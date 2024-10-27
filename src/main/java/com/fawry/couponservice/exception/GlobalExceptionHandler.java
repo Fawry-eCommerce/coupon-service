@@ -1,7 +1,7 @@
 package com.fawry.couponservice.exception;
 
-import com.fawry.couponservice.exception.CustomExceptionHandler.ErrorResponse;
-import com.fawry.couponservice.exception.CustomExceptionHandler.NotFoundException;
+import com.fawry.couponservice.dto.ErrorResponse;
+import com.fawry.couponservice.exception.customExceptions.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -15,7 +15,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleCouponNotFoundException(NotFoundException ex) {
         ErrorResponse errorResponse = new ErrorResponse(
                 ex.getMessage(),
-                HttpStatus.NOT_FOUND.value(),
+                HttpStatus.NOT_FOUND,
                 LocalDateTime.now()
         ) {
         };
@@ -27,7 +27,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleGlobalException(Exception ex) {
         ErrorResponse errorResponse = new ErrorResponse(
                 "An unexpected error occurred: " + ex.getMessage(),
-                HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                HttpStatus.INTERNAL_SERVER_ERROR,
                 LocalDateTime.now()
         );
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);

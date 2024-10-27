@@ -1,26 +1,21 @@
 package com.fawry.couponservice.mapper;
 
-import com.fawry.couponservice.dto.ConsumptionRequestDto;
 import com.fawry.couponservice.dto.ConsumptionResponseDto;
-import com.fawry.couponservice.dto.CouponResponseDto;
 import com.fawry.couponservice.dto.CouponUseDto;
 import com.fawry.couponservice.entity.Coupon;
 import com.fawry.couponservice.entity.CouponConsumption;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Data
-@AllArgsConstructor
-//@NoArgsConstructor
 @Builder
 @Component
+@RequiredArgsConstructor
 public class ConsumptionMapperImpl implements ConsumptionMapper {
-    @Autowired
-    CouponMapper couponMapper;
+
+    private final CouponMapper couponMapper;
 
     @Override
     public CouponConsumption toEntity(CouponUseDto couponUseDto, Coupon tempCoupon) {

@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
-import java.util.List;
 
 @Entity
 @Data
@@ -48,8 +47,8 @@ public class Coupon {
     @Column(name = "expired_at")
     private Timestamp expiredAt;
 
-    @OneToMany(mappedBy = "coupon", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
-    private List<CouponConsumption> couponConsumptionList;
+//    @OneToMany(mappedBy = "coupon", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH}, fetch = FetchType.LAZY)
+//    private List<CouponConsumption> couponConsumptionList;
 
     @PrePersist
     protected void onCreate() {
