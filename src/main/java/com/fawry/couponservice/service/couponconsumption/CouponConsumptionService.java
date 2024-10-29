@@ -1,4 +1,4 @@
-package com.fawry.couponservice.service;
+package com.fawry.couponservice.service.couponconsumption;
 
 import com.fawry.couponservice.dto.ConsumptionRequestDto;
 import com.fawry.couponservice.dto.ConsumptionResponseDto;

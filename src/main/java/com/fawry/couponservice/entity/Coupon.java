@@ -13,42 +13,21 @@ import java.sql.Timestamp;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "coupon")
 public class Coupon {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
     private Long id;
-
-    @Column(unique = true, name = "code", nullable = false)
+    @Column(unique = true, nullable = false)
     private String code;
-
-    @Column(name = "remaining_usages")
     private int remainingUsages;
-
-    @Column(name = "usages")
     private int usages;
-
-    @Column(name = "value")
     private int value;
-
-    @Column(name = "active", columnDefinition = "boolean default true")
     private boolean active = true;
-
-    @Column(name = "percentage", columnDefinition = "boolean default false")
     private boolean percentage = false;
-
-    @Column(name = "created_at", updatable = false)
+    @Column(updatable = false)
     private Timestamp createdAt;
-
-    @Column(name = "updated_at")
     private Timestamp updatedAt;
-
-    @Column(name = "expired_at")
     private Timestamp expiredAt;
-
-//    @OneToMany(mappedBy = "coupon", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH}, fetch = FetchType.LAZY)
-//    private List<CouponConsumption> couponConsumptionList;
 
     @PrePersist
     protected void onCreate() {

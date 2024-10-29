@@ -19,5 +19,4 @@ public class CouponResponseDto {
     private int usages;
     private Timestamp expiredAt;
     private int remainingUsages;
-
 }

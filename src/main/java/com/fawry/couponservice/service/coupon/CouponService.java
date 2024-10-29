@@ -1,4 +1,4 @@
-package com.fawry.couponservice.service;
+package com.fawry.couponservice.service.coupon;
 
 import com.fawry.couponservice.dto.CouponRequestDto;
 import com.fawry.couponservice.dto.CouponResponseDto;
@@ -8,13 +8,11 @@ import com.fawry.couponservice.entity.Coupon;
 import java.util.List;
 
 public interface CouponService {
-    void create(CouponRequestDto coupon);
+    CouponResponseDto create(CouponRequestDto coupon);
     List<CouponResponseDto> getCoupons();
     CouponResponseDto getCoupon(Long id,String code);
     void delete(Long id,String code);
     CouponResponseDto update(CouponRequestDto coupon);
     void useCoupon(CouponUseDto coupon);
-
-    //----------------------------------------------
     Coupon toggleActivation(Long id);
 }

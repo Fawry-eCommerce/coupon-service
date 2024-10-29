@@ -3,78 +3,63 @@ package com.fawry.couponservice.rest;
 import com.fawry.couponservice.dto.CouponRequestDto;
 import com.fawry.couponservice.dto.CouponResponseDto;
 import com.fawry.couponservice.dto.CouponUseDto;
-import com.fawry.couponservice.exception.customExceptions.NotFoundException;
-import com.fawry.couponservice.service.CouponService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.fawry.couponservice.service.coupon.CouponService;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/coupons")
+@RequestMapping("coupons")
+@RequiredArgsConstructor
 public class CouponController {
-    private CouponService couponService;
 
-    @Autowired
-    public CouponController(CouponService couponService) {
-        this.couponService = couponService;
-    }
+    private final CouponService couponService;
 
-    //    Get all coupons
     @GetMapping
     public List<CouponResponseDto> getAllCoupons() {
-        List<CouponResponseDto> coupons = couponService.getCoupons();
-        if (coupons.isEmpty()) {
-            throw new NotFoundException("No coupons available");
-        }
-        return coupons;
+        return couponService.getCoupons();
     }
 
-    //    create a coupon
     @PostMapping
-    public void addCoupon(@RequestBody CouponRequestDto coupon) {
-        couponService.create(coupon);
+    public CouponResponseDto addCoupon(@Valid @RequestBody CouponRequestDto coupon) {
+        return couponService.create(coupon);
     }
 
-    //    get single coupon
-    @GetMapping("/{identifier}")
+    @GetMapping("{identifier}")
     public CouponResponseDto getCouponByIdOrCode(@PathVariable String identifier) {
-        // Determine if the identifier is a Long (ID) or a String (Code)
-        CouponResponseDto coupon;
-        try {
-            Long id = Long.parseLong(identifier);
-            coupon = couponService.getCoupon(id, null);
-
-        } catch (NumberFormatException e) {
-            coupon = couponService.getCoupon(null, identifier);
-        }
-        if (coupon == null) {
-            throw new NotFoundException("Coupon with identifier " + identifier + " not found");
-        }
-
-        return coupon;
+        return findCouponByIdentifier(identifier);
     }
 
-    //    =========================================================
-    @PostMapping("/use-coupon")
-    public void useCoupon(@RequestBody CouponUseDto coupon) {
+    @PostMapping("use-coupon")
+    public void useCoupon(@Valid @RequestBody CouponUseDto coupon) {
         couponService.useCoupon(coupon);
-
     }
-//     ============================================================
 
     @PutMapping
-    public CouponResponseDto updateCoupon(@RequestBody CouponRequestDto coupon) {
+    public CouponResponseDto updateCoupon(@Valid @RequestBody CouponRequestDto coupon) {
         return couponService.update(coupon);
     }
 
-    @DeleteMapping("/{identifier}")
+    @DeleteMapping("{identifier}")
     public void deleteCouponByIdOrCode(@PathVariable String identifier) {
+        deleteCouponByIdentifier(identifier);
+    }
 
+    private CouponResponseDto findCouponByIdentifier(String identifier) {
+        try {
+            Long id = Long.parseLong(identifier);
+            return couponService.getCoupon(id, null);
+        } catch (NumberFormatException e) {
+            return couponService.getCoupon(null, identifier);
+        }
+    }
+
+    private void deleteCouponByIdentifier(String identifier) {
         try {
             Long id = Long.parseLong(identifier);
             couponService.delete(id, null);
-
         } catch (NumberFormatException e) {
             couponService.delete(null, identifier);
         }
